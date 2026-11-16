@@ -1,0 +1,4 @@
+.mcpregistry*
+.mcppublisher*
+*.pem
+.env

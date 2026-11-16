@@ -1,0 +1,231 @@
+{
+  "name": "calculate_medical_wpi",
+  "title": "Calculate medical whole-person impairment",
+  "description": "Use clinician-confirmed AMA Guides Fifth Edition inputs for a single injury. Supports spine DRE and active mobile shoulder, elbow/forearm, and wrist range of motion. For spine DRE, enter the category and whole-number WPI already selected by the clinician. For joint motion, enter side and all listed angles in degrees. Use the clinician’s selected valid measurements. Return informational medical WPI, status and source references for clinician review. Accepts only de-identified structured findings. For other methods, use the InjuryMgmt web calculator.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "clinicianConfirmed": {
+        "type": "boolean",
+        "const": true,
+        "description": "Explicit confirmation that a clinician selected the DRE ratings and/or verified the active ROM findings for this injury. Ask before calling if confirmation is missing."
+      },
+      "spineDre": {
+        "minItems": 1,
+        "maxItems": 3,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "region": {
+              "type": "string",
+              "enum": [
+                "cervical",
+                "thoracic",
+                "lumbar"
+              ]
+            },
+            "category": {
+              "type": "string",
+              "enum": [
+                "I",
+                "II",
+                "III",
+                "IV",
+                "V"
+              ],
+              "description": "DRE category selected by the clinician."
+            },
+            "wpi": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Whole-person impairment percent selected by the clinician within that category."
+            }
+          },
+          "required": [
+            "region",
+            "category",
+            "wpi"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "shoulderRom": {
+        "minItems": 1,
+        "maxItems": 2,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "side": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "flexion": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "extension": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "abduction": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "adduction": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "internalRotation": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "externalRotation": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            }
+          },
+          "required": [
+            "side",
+            "flexion",
+            "extension",
+            "abduction",
+            "adduction",
+            "internalRotation",
+            "externalRotation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "elbowRom": {
+        "minItems": 1,
+        "maxItems": 2,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "side": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "flexion": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "extensionLag": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Degrees short of full extension. Use 0 for full extension."
+            },
+            "pronation": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "supination": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            }
+          },
+          "required": [
+            "side",
+            "flexion",
+            "extensionLag",
+            "pronation",
+            "supination"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "wristRom": {
+        "minItems": 1,
+        "maxItems": 2,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "side": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "flexion": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "extension": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "radialDeviation": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            },
+            "ulnarDeviation": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "description": "Clinician-confirmed active motion in degrees."
+            }
+          },
+          "required": [
+            "side",
+            "flexion",
+            "extension",
+            "radialDeviation",
+            "ulnarDeviation"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "clinicianConfirmed"
+    ],
+    "additionalProperties": false
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+  },
+  "execution": {
+    "taskSupport": "forbidden"
+  }
+}
