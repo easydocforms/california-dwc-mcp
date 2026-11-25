@@ -28,11 +28,15 @@ The expected result is the clinician-selected 8% medical WPI with a reference to
 This repository holds a small Go client, an MCP Registry manifest, and a snapshot of the public tool schema. It connects to the hosted server; it is not the calculator implementation. Use Go 1.25 or later.
 
 ```sh
-go get github.com/easydocforms/california-dwc-mcp@v0.1.0
+go get github.com/easydocforms/california-dwc-mcp@v0.1.1
 ```
 
 Call `impairmentmcp.Connect(ctx)` to open an SDK session and `session.ListTools(ctx, nil)` to discover the current schema. Call `session.Close()` when finished.
 
 Use only synthetic or de-identified inputs. Have the rating clinician review the inputs and results before use.
 
-[InjuryMgmt](https://injurymgmt.com/) · [Web calculator and supported methods](https://injurymgmt.com/california-dwc-impairment-calculator/) · [MCP privacy](https://mcp.injurymgmt.com/privacy) · [MCP terms](https://mcp.injurymgmt.com/terms)
+[InjuryMgmt](https://injurymgmt.com/) · [MCP privacy](https://mcp.injurymgmt.com/privacy) · [MCP terms](https://mcp.injurymgmt.com/terms)
+
+## Links
+
+- [Free California DWC impairment calculator](https://injurymgmt.com/california-dwc-impairment-calculator/)
